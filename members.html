@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thành viên - Sinjoros</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body class="preload">
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">Sinjoros</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="members.html">Thành viên</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="announcements.html">Thông báo</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="background" id="stars-background"></div>
+<div class="main-header">
+  <h1>Danh sách thành viên</h1>
+</div>
+<main class="main-content">
+<div id="member-list" class="members-grid"></div>
+</main>
+<footer>&copy; 2025 Sinjoros</footer>
+<script src="js/stars.js"></script>
+<script>
+  fetch('http://localhost:3000/api/members')
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("member-list");
+      container.innerHTML = "";
+      data.forEach((member, index) => {
+        const card = document.createElement("div");
+        card.className = "card member animate__animated animate__fadeInUp";
+        card.style.animationDelay = `${index * 100}ms`; // mỗi card trễ 100ms
+        card.innerHTML = `
+          <img src="${member.avatar}" alt="${member.username}" class="logo" style="width:60px;height:60px;margin-bottom:10px;">
+          <h3>${member.username}#${member.discriminator}</h3>
+          <p>Trạng thái: <strong>${member.status}</strong></p>
+          <p>Ngày tham gia: ${new Date(member.joinedAt).toLocaleDateString()}</p>
+          <p>Vai trò: ${member.roles?.join(", ") || "Không có vai trò"}</p>
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(err => {
+      document.getElementById("member-list").innerText = "Không thể tải dữ liệu";
+      console.error(err);
+    });
+</script>
+<script>
+  document.body.classList.add('page-transition'); // khi tải trang
+
+  document.querySelectorAll('a').forEach(link => {
+    const href = link.href;
+    const isInternal = link.hostname === location.hostname && !link.href.endsWith('#');
+    
+    if (isInternal) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.body.classList.remove('page-transition');
+        document.body.classList.add('fade-out');
+
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500); // khớp với animation duration
+      });
+    }
+  });
+</script>
+</body>
+</html>

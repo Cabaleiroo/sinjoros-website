@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sinjoros - Trang chủ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body class="preload">
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Sinjoros</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="members.html">Thành viên</a></li>
+        <li><a href="contact.html">Liên hệ</a></li>
+        <li><a href="announcements.html">Thông báo</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="background" id="stars-background"></div>
+  <header class="main-header animate__animated animate__fadeInDown">
+    <img src="assets/vala.jpg" alt="Sinjoros Logo" class="logo" />
+    <h1>Chào mừng đến với Sinjoros</h1>
+    <p>Cộng đồng Discord đa chiều - nơi hội tụ của sự hỗn loạn, đam mê và sáng tạo.</p>
+  </header>
+  <main class="main-content">
+    <section class="card animate__animated animate__zoomIn">
+      <h2>Lịch sử hình thành</h2>
+      <p>Sinjoros được tạo từ năm 2024 với mục đích ban đầu là dành cho nhóm bạn bè chơi thân. Sau đó 1 khoảng thời gian, bọn mình quyết định mở rộng phạm vi của server ra rộng hơn đó là dành cho cộng đồng với mục đích giúp mọi người có được nơi để kết bạn và tương tác với những người bạn mới.</p>
+    </section>
+    <section class="card animate__animated animate__zoomIn animate__delay-1s">
+      <h2>Thành viên hiện tại</h2>
+      <p id="total-member-count">Đang tải số lượng thành viên...</p>
+    </section>
+    <section class="card animate__animated animate__zoomIn animate__delay-2s">
+      <h2>Sự kiện nổi bật</h2>
+      <ul>
+        <li>💬 Talk Show mỗi tối thứ 7 hàng tuần</li>
+        <li>🧠 Leo rank mỗi tối</li>
+        <li>🎉 1 vài sự kiện có quà tặng như: giveaway, bóc túi mù...</li>
+      </ul>
+    </section>
+    <section class="card animate__animated animate__zoomIn animate__delay-3s">
+      <h2>Tầm nhìn</h2>
+      <p>Chúng tôi hướng đến một cộng đồng nơi mọi người cảm thấy tự do thể hiện cá tính, học hỏi kiến thức và giải trí lành mạnh.</p>
+    </section>
+    <section class="join-section animate__animated animate__fadeInUp animate__delay-4s">
+      <a href="https://discord.gg/b9sxxTXx7R" class="btn btn-discord" target="_blank">🚪 Tham gia Server Sinjoros</a>
+    </section>
+  </main>
+  <footer>&copy; 2025 Sinjoros. Powered by Cabaleiro.</footer>
+  <script src="js/stars.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.remove('preload');
+      document.body.classList.add('page-transition');
+    });
+  </script>
+  <script>
+  document.body.classList.add('page-transition'); // khi tải trang
+
+  document.querySelectorAll('a').forEach(link => {
+    const href = link.href;
+    const isInternal = link.hostname === location.hostname && !link.href.endsWith('#');
+    
+    if (isInternal) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.body.classList.remove('page-transition');
+        document.body.classList.add('fade-out');
+
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500); // khớp với animation duration
+      });
+    }
+  });
+</script>
+<script>
+  fetch("http://localhost:3000/api/membercount")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("total-member-count").innerText =
+        `👥 Server hiện có tổng cộng ${data.total} thành viên.`;
+    })
+    .catch(err => {
+      document.getElementById("total-member-count").innerText = "Không thể tải dữ liệu.";
+      console.error(err);
+    });
+</script>
+</body>
+</html>

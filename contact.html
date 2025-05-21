@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liên hệ - Sinjoros</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="preload">
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">Sinjoros</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="members.html">Thành viên</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="announcements.html">Thông báo</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="background" id="stars-background"></div>
+<div class="main-header">
+  <h1>Liên hệ với chúng tôi</h1>
+</div>
+<main class="main-content">
+  <section class="card">
+    <h2>Tham gia server Discord</h2>
+    <img src="assets/vala.jpg" alt="Discord" class="logo" />
+    <p>Hội người mọi</p>
+    <a href="https://discord.gg/b9sxxTXx7R" class="btn btn-discord" target="_blank">Tham gia ngay</a>
+  </section>
+  <section class="card">
+    <h2>Follow admin trên Instagram</h2>
+    <img src="assets/avatar.webp" alt="Avatar" class="logo" />
+    <p>@onlyfans.sonh</p>
+    <a href="https://instagram.com/onlyfans.sonh" class="btn" target="_blank" style="background: linear-gradient(45deg, #feda75, #d62976, #962fbf, #4f5bd5);">Mở Instagram</a>
+  </section>
+  <section class="card">
+    <h2>Đăng ký nhận thông báo</h2>
+    <form id="subscribe-form">
+      <input type="email" id="email-input" placeholder="Nhập Gmail của bạn..." required style="padding:10px;width:80%;max-width:300px;" />
+      <br>
+      <button type="submit" class="btn">Đăng ký</button>
+    </form>
+  </section>
+  <section class="card">
+    <h2>Liên hệ trực tiếp qua Gmail</h2>
+    <p>Email: <a href="mailto:hts0510.work@gmail.com" style="color: #ffffff;">hts0510.work@gmail.com</a></p>
+  </section>
+</main>
+<footer>&copy; 2025 Sinjoros</footer>
+<script src="js/stars.js"></script>
+<script>
+  const form = document.getElementById('subscribe-form');
+  const emailList = JSON.parse(localStorage.getItem('emailSubscribers') || '[]');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('email-input').value;
+    emailList.push(email);
+    localStorage.setItem('emailSubscribers', JSON.stringify(emailList));
+    alert("Đăng ký thành công!");
+    form.reset();
+  });
+</script>
+<script>
+  document.body.classList.add('page-transition'); // khi tải trang
+
+  document.querySelectorAll('a').forEach(link => {
+    const href = link.href;
+    const isInternal = link.hostname === location.hostname && !link.href.endsWith('#');
+    
+    if (isInternal) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.body.classList.remove('page-transition');
+        document.body.classList.add('fade-out');
+
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500); // khớp với animation duration
+      });
+    }
+  });
+</script>
+</body>
+</html>

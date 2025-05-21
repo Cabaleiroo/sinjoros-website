@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thông báo - Sinjoros</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="preload">
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">Sinjoros</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="members.html">Thành viên</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="announcements.html">Thông báo</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="background" id="stars-background"></div>
+<div class="main-header">
+  <h1>Thông báo & Sự kiện</h1>
+</div>
+<main class="main-content">
+  <form id="announcement-form" class="card">
+    <input type="text" id="title" placeholder="Tiêu đề..." required>
+    <textarea id="content" rows="4" placeholder="Nội dung..." required></textarea>
+    <button type="submit" class="btn">Đăng thông báo</button>
+  </form>
+  <div id="announcements-list"></div>
+</main>
+<footer>&copy; 2025 Sinjoros</footer>
+<script src="js/stars.js"></script>
+<script>
+  const owner = true; // đổi thành false để test vai trò người thường
+  const form = document.getElementById("announcement-form");
+  const list = document.getElementById("announcements-list");
+  let announcements = JSON.parse(localStorage.getItem("announcements") || "[]");
+
+  function render() {
+    list.innerHTML = "";
+    announcements.forEach((a, i) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${a.title}</h3>
+        <p>${a.content}</p>
+        <small>${a.date}</small>
+        ${owner ? '<button onclick="remove(' + i + ')" class="btn delete-btn">Xóa</button>' : ''}
+
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function remove(index) {
+    announcements.splice(index, 1);
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+    render();
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+    announcements.push({ title, content, date: new Date().toLocaleString() });
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+    form.reset();
+    render();
+  });
+
+  render();
+</script>
+<script>
+  document.body.classList.add('page-transition'); // khi tải trang
+
+  document.querySelectorAll('a').forEach(link => {
+    const href = link.href;
+    const isInternal = link.hostname === location.hostname && !link.href.endsWith('#');
+    
+    if (isInternal) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.body.classList.remove('page-transition');
+        document.body.classList.add('fade-out');
+
+        setTimeout(() => {
+          window.location.href = href;
+        }, 500); // khớp với animation duration
+      });
+    }
+  });
+</script>
+</body>
+</html>
